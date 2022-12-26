@@ -1,19 +1,43 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { useDispatch } from "react-redux";
 
 const HomeBody = () => {
+  const dispatch = useDispatch();
+  const [inputSearch, setInputSearch] = useState("");
+  const navigate = useNavigate();
+
+  const submitfunc = (e) => {
+    e.preventDefault();
+    navigate("/search");
+
+    dispatch({
+      type: "saveInput",
+      payload: inputSearch,
+    });
+  };
+
   return (
     <>
       <Wrap>
         <div className="tb-h-logo"></div>
-        <div className="tb-h-search">
+        <form className="tb-h-search">
           <div className="tb-h-searchLogo"></div>
           <input
             type="text"
             className="tb-h-inputText"
             placeholder="Search Google or type a URL"
+            value={inputSearch}
+            onChange={(e) => setInputSearch(e.target.value)}
           />
+          <button
+            style={{ display: "none" }}
+            type="submit"
+            onClick={submitfunc}
+          ></button>
           <div className="tb-h-voiceSearchLogo"></div>
-        </div>
+        </form>
       </Wrap>
     </>
   );
