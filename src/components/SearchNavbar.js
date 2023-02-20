@@ -1,17 +1,24 @@
 import { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 
 const SearchNavbar = () => {
-  const [search, setSearch] = useState("");
+  const { searchterm } = useParams();
+  const [search, setSearch] = useState(searchterm);
+  const navigate = useNavigate();
 
   const submitfunc = (e) => {
     e.preventDefault();
-    console.log(search);
+    navigate(`/search/${search}/1`);
   };
   return (
     <NavWrap>
       <LeftNav>
-        <div className="tb-s-Glogo"></div>
+        <img
+          className="tb-s-Glogo"
+          src="https://png2.cleanpng.com/sh/f16b3bddf49c9b0c4a6a4cd51d2a5a6f/L0KzQYi4UsE3N5VoT5GAYUO4RYW3Usc4bGpqTpCDNES4RYK7VME2OWQ5TKY8NUS3SYGCTwBvbz==/5a35540277d9e6.8445514415134443544909.png"
+          alt=""
+        />
         <form className="tb-s-search">
           <input
             type="text"
@@ -26,7 +33,12 @@ const SearchNavbar = () => {
             onClick={submitfunc}
           ></button>
           <div className="svgLogosDiv">
-            <div className="tb-s-NLogo close">
+            <div
+              className="tb-s-NLogo close"
+              onClick={() => {
+                setSearch("");
+              }}
+            >
               <svg
                 focusable="false"
                 xmlns="http://www.w3.org/2000/svg"
@@ -37,7 +49,6 @@ const SearchNavbar = () => {
             </div>
             <div className="tb-s-NLogo voice">
               <svg
-                className="goxjub"
                 focusable="false"
                 viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg"
@@ -57,8 +68,58 @@ const SearchNavbar = () => {
                 ></path>
               </svg>
             </div>
-            <div className="tb-s-Nlogo Glens"></div>
-            <div className="tb-s-NLogo ">
+            <div className="tb-s-Nlogo Glens">
+              <svg
+                version="1.1"
+                id="Standard_product_icon"
+                x="0px"
+                y="0px"
+                viewBox="0 0 192 192"
+              >
+                <rect
+                  id="bounding_box_1_"
+                  fill="none"
+                  width="192"
+                  height="192"
+                />
+                <g id="art_layer">
+                  <circle id="Dot" fill="#4285F4" cx="96" cy="104.15" r="28" />
+                  <path
+                    id="Red"
+                    fill="#EA4335"
+                    d="M160,72v40.15V136c0,1.69-0.34,3.29-0.82,4.82v0v0c-1.57,4.92-5.43,8.78-10.35,10.35h0v0
+		c-1.53,0.49-3.13,0.82-4.82,0.82H66l16,16h50h12c4.42,0,8.63-0.9,12.46-2.51c3.83-1.62,7.28-3.96,10.17-6.86
+		c1.45-1.45,2.76-3.03,3.91-4.74c2.3-3.4,3.96-7.28,4.81-11.44c0.43-2.08,0.65-4.24,0.65-6.45v-12V96.15V84l-6-19l-10.82,2.18
+		C159.66,68.71,160,70.31,160,72z"
+                  />
+                  <path
+                    id="Blue"
+                    fill="#4285F4"
+                    d="M32,72c0-1.69,0.34-3.29,0.82-4.82c1.57-4.92,5.43-8.78,10.35-10.35C44.71,56.34,46.31,56,48,56
+		h96c1.69,0,3.29,0.34,4.82,0.82c0,0,0,0,0,0L149,45l-17-5l-16-16h-13.44H96h-6.56H76L60,40H48c-17.67,0-32,14.33-32,32v12v20l16,16
+		V72z"
+                  />
+                  <path
+                    id="Green"
+                    fill="#34A853"
+                    d="M144,40h-12l16.83,16.83c1.23,0.39,2.39,0.93,3.47,1.59c2.16,1.32,3.97,3.13,5.29,5.29
+		c0.66,1.08,1.2,2.24,1.59,3.47v0L176,84V72C176,54.33,161.67,40,144,40z"
+                  />
+                  <path
+                    id="Yellow"
+                    fill="#FBBC04"
+                    d="M48,168h39.89l-16-16H48c-8.82,0-16-7.18-16-16v-23.89l-16-16V136C16,153.67,30.33,168,48,168z
+		"
+                  />
+                </g>
+              </svg>
+            </div>
+            <div
+              className="tb-s-NLogo searchLogo"
+              onClick={() => {
+                navigate(`/search/${search}`);
+              }}
+            >
               <svg
                 focusable="false"
                 xmlns="http://www.w3.org/2000/svg"
@@ -82,11 +143,10 @@ const SearchNavbar = () => {
           </svg>
         </div>
         <div className="tb-s-menu">
-          <svg className="gb_0e" focusable="false" viewBox="0 0 24 24">
+          <svg focusable="false" viewBox="0 0 24 24">
             <path d="M6,8c1.1,0 2,-0.9 2,-2s-0.9,-2 -2,-2 -2,0.9 -2,2 0.9,2 2,2zM12,20c1.1,0 2,-0.9 2,-2s-0.9,-2 -2,-2 -2,0.9 -2,2 0.9,2 2,2zM6,20c1.1,0 2,-0.9 2,-2s-0.9,-2 -2,-2 -2,0.9 -2,2 0.9,2 2,2zM6,14c1.1,0 2,-0.9 2,-2s-0.9,-2 -2,-2 -2,0.9 -2,2 0.9,2 2,2zM12,14c1.1,0 2,-0.9 2,-2s-0.9,-2 -2,-2 -2,0.9 -2,2 0.9,2 2,2zM16,6c0,1.1 0.9,2 2,2s2,-0.9 2,-2 -0.9,-2 -2,-2 -2,0.9 -2,2zM12,8c1.1,0 2,-0.9 2,-2s-0.9,-2 -2,-2 -2,0.9 -2,2 0.9,2 2,2zM18,14c1.1,0 2,-0.9 2,-2s-0.9,-2 -2,-2 -2,0.9 -2,2 0.9,2 2,2zM18,20c1.1,0 2,-0.9 2,-2s-0.9,-2 -2,-2 -2,0.9 -2,2 0.9,2 2,2z"></path>
           </svg>
         </div>
-        <div className="tb-s-profile"></div>
       </RightNav>
     </NavWrap>
   );
@@ -100,23 +160,36 @@ const NavWrap = styled.div`
   align-items: center;
   padding: 10px 40px;
   padding-left: 70px;
+
+  @media screen and (max-width: 1150px) {
+    padding: 10px 20px;
+  }
+  @media screen and (max-width: 700px) {
+    flex-direction: column-reverse;
+  }
+  @media screen and (max-width: 500px) {
+    padding: 0;
+  }
 `;
 const LeftNav = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: row;
-  padding: 20px 0;
+  padding: 10px 0;
+
   .tb-s-Glogo {
-    width: 90px;
-    height: 30px;
-    background-image: url(./images/googleLogo.svg);
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    margin-right: 50px;
-    cursor: pointer;
+    height: 50px;
+    margin-right: 100px;
+
+    @media screen and (max-width: 1150px) {
+      margin-right: 10px;
+    }
+    @media screen and (max-width: 700px) {
+      display: none;
+    }
   }
+
   .tb-s-search {
     box-shadow: 0 3px 4px 1px #bcbcbc66;
     width: 700px;
@@ -126,7 +199,17 @@ const LeftNav = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
+    @media screen and (max-width: 950px) {
+      width: 70vw;
+    }
+    @media screen and (max-width: 700px) {
+      width: 95vw;
+    }
+    @media screen and (max-width: 500px) {
+      border-radius: 10px;
+    }
   }
+
   .tb-h-inputText {
     padding: 8px 0px;
     width: 100%;
@@ -143,21 +226,28 @@ const LeftNav = styled.div`
       font-weight: 600;
       font-size: 1em;
     }
+    @media screen and (max-width: 500px) {
+    }
   }
+
   .svgLogosDiv {
     display: flex;
     align-items: center;
     justify-content: center;
   }
+  @media screen and (max-width: 500px) {
+    .searchLogo {
+      display: block;
+    }
+  }
   .Glens {
-    height: 25px;
-    width: 25px;
-    background-image: url(./images/Glens.svg);
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
+    width: 22px;
+    height: 22px;
     margin: 0 8px;
     cursor: pointer;
+    @media screen and (max-width: 500px) {
+      display: none;
+    }
   }
   .tb-s-NLogo {
     width: 22px;
@@ -166,12 +256,23 @@ const LeftNav = styled.div`
     fill: currentColor;
     margin: 0 8px;
     cursor: pointer;
+    @media screen and (max-width: 500px) {
+      margin-right: 5px;
+    }
   }
   .close {
     color: #5f6368;
     border-right: 0.5px solid #d0d0d0;
     box-sizing: content-box;
     padding-right: 10px;
+    @media screen and (max-width: 500px) {
+      display: none;
+    }
+  }
+  .voice {
+    @media screen and (max-width: 500px) {
+      display: none;
+    }
   }
 `;
 const RightNav = styled.div`
@@ -191,15 +292,7 @@ const RightNav = styled.div`
       cursor: pointer;
     }
   }
-  .tb-s-profile {
-    margin: 0px 10px;
-    width: 33px;
-    height: 33px;
-    background-image: url(./images/profile.jpg);
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    border-radius: 50%;
-    cursor: pointer;
+  @media screen and (max-width: 700px) {
+    display: none;
   }
 `;

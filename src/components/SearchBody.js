@@ -1,15 +1,19 @@
 import useGoogleSearch from "../useGoogleSearch";
-import { useSelector } from "react-redux";
 import styled from "styled-components";
 import Spinner from "./Spinner";
+import { useNavigate, useParams } from "react-router-dom";
+import { useRef, useState } from "react";
 
 const SearchBody = () => {
-  const { term } = useSelector((state) => state.inputRedur);
-  const { data } = useGoogleSearch(term);
-  console.log(data);
+  const navigate = useNavigate();
+  const { searchterm, startingat } = useParams();
+  const [loading, setloading] = useState(true);
+  const { data } = useGoogleSearch(searchterm, startingat, setloading);
+  const scrollTo = useRef();
+
   return (
     <>
-      <SearchOptions>
+      <SearchOptions ref={scrollTo}>
         <div className="options activeOption">
           <svg focusable="false" viewBox="0 0 24 24">
             <path
@@ -73,30 +77,67 @@ const SearchBody = () => {
 
         <div className="tools">Tools</div>
       </SearchOptions>
-
-      {!data ? (
+      {loading ? (
         <SpinnerWrap>
           <Spinner />
           Loading
         </SpinnerWrap>
+      ) : data.items ? (
+        <>
+          <SearchBodyList>
+            <SearchTotal>
+              About {data.searchInformation.formattedTotalResults} results (
+              {data.searchInformation.formattedSearchTime} seconds) in loading
+              page {Math.floor(startingat / 10)}
+            </SearchTotal>
+            {data?.items.map((item, i) => (
+              <SearchCards key={i++}>
+                <a className="link" href={item.link}>
+                  {item.displayLink}
+                </a>
+                <a className="title" href={item.link}>
+                  {item.title}
+                </a>
+                <div className="desc">{item.snippet}</div>
+              </SearchCards>
+            ))}
+          </SearchBodyList>
+
+          <Pagination>
+            {startingat > 10 && (
+              <>
+                <div
+                  className="paginationBtns"
+                  onClick={() => {
+                    navigate(`/search/${searchterm}/${~~startingat - 10}`);
+                    scrollTo.current.scrollIntoView({
+                      behavior: "smooth",
+                      block: "nearest",
+                      inline: "start",
+                    });
+                  }}
+                >
+                  Previous
+                </div>
+              </>
+            )}
+            <div
+              className="paginationBtns"
+              onClick={() => {
+                navigate(`/search/${searchterm}/${~~startingat + 10}`);
+                scrollTo.current.scrollIntoView({
+                  behavior: "smooth",
+                  block: "nearest",
+                  inline: "start",
+                });
+              }}
+            >
+              Next
+            </div>
+          </Pagination>
+        </>
       ) : (
-        <SearchBodyList>
-          <SearchTotal>
-            About {data.searchInformation.formattedTotalResults} results (
-            {data.searchInformation.formattedSearchTime} seconds)
-          </SearchTotal>
-          {data?.items.map((item, i) => (
-            <SearchCards key={i++}>
-              <a className="link" href={item.link}>
-                {item.displayLink}
-              </a>
-              <a className="title" href={item.link}>
-                {item.title}
-              </a>
-              <div className="desc">{item.snippet}</div>
-            </SearchCards>
-          ))}
-        </SearchBodyList>
+        data && data.error && <Error>Daily Quota Limited Exhausted</Error>
       )}
     </>
   );
@@ -146,6 +187,19 @@ const SearchOptions = styled.div`
     margin-left: 130px;
     letter-spacing: 0.3px;
     cursor: pointer;
+    @media screen and (max-width: 1150px) {
+      margin-left: 30px;
+    }
+  }
+  @media screen and (max-width: 1150px) {
+    padding-left: 90px;
+  }
+  @media screen and (max-width: 700px) {
+    padding-left: 2vw;
+    overflow-x: auto;
+  }
+  @media screen and (max-width: 500px) {
+    margin-top: 10px;
   }
 `;
 const SpinnerWrap = styled.div`
@@ -162,6 +216,10 @@ const SpinnerWrap = styled.div`
 const SearchBodyList = styled.div`
   width: 76vw;
   margin: auto;
+  @media screen and (max-width: 700px) {
+    width: 100%;
+    padding-left: 20px;
+  }
 `;
 const SearchTotal = styled.div`
   font-size: 0.85em;
@@ -199,4 +257,42 @@ const SearchCards = styled.div`
     font-size: 0.87em;
     letter-spacing: 0.25px;
   }
+`;
+const Pagination = styled.div`
+  width: 700px;
+  margin-left: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 50px;
+  @media screen and (max-width: 1150px) {
+    margin-left: 90px;
+    width: 70vw;
+  }
+  @media screen and (max-width: 700px) {
+    margin-left: 2vw;
+    width: 90vw;
+  }
+  @media screen and (max-width: 500px) {
+    margin-top: 10px;
+  }
+
+  .paginationBtns {
+    font-size: 1.12em;
+    font-weight: 400;
+    letter-spacing: 0.2px;
+    text-transform: capitalize;
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+`;
+const Error = styled.div`
+  width: 100%;
+  min-height: 300px;
+  text-align: center;
+  display: grid;
+  place-items: center;
 `;

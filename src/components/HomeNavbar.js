@@ -53,9 +53,9 @@ const Wrap = styled.nav`
     width: 33px;
     height: 33px;
     background-image: url(./images/profile.jpg);
-    background-position: center;
+    background-position: top;
     background-repeat: no-repeat;
-    background-size: cover;
+    background-size: 120%;
     border-radius: 50%;
   }
 `;

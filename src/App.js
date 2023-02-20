@@ -9,7 +9,7 @@ function App() {
       <Router>
         <Routes>
           <Route exact path="/" element={<Home />} />
-          <Route exact path="/search" element={<Search />} />
+          <Route path="/search/:searchterm/:startingat" element={<Search />} />
         </Routes>
       </Router>
     </>
